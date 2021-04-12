@@ -1,0 +1,14 @@
+@import '../node_modules/bulma/bulma.sass';
+
+body {
+    background-color: $dark !important;
+    height: 100vh;
+    padding: 30px;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    background-color: $white;
+    
+}
