@@ -6,11 +6,41 @@
     <title>Courier's Helper</title>
 
     <link rel="stylesheet" href="css/main.css">
+    
     <script src="index.js"></script>
+    <script src="js/helpers.js"></script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHzYIUHnh0qDnoHqHYuccC-wdrEGpp4nA&callback=initMap&libraries=places" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+
 </head>
 <body>
     <div class="wrapper">
-        <h1 class="title">Courier's Helper</h1>
+    <h1 class="title">Courier's Helper</h1>
+    <div class="inputs-block">
+            
+        <h4>Adresses</h4>
+        <div id="inputs" class="field"></div>
+            
+        <div class="field new-address-block">
+            <div class="control">
+                <button class="button is-light" id="new_address">Add more adresses</button>
+            </div>
+        </div>
+              
+              
+        <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link" id="build">Build route</button>
+          </div>
+
+        </div>
+        
+        <div class="map">
+            <div id="googleMap"></div>
+        </div>
     </div>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
