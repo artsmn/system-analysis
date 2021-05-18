@@ -16,31 +16,35 @@
 </head>
 <body>
     <div class="wrapper">
-    <h1 class="title">Courier's Helper</h1>
-    <div class="inputs-block">
-            
-        <h4>Adresses</h4>
-        <div id="inputs" class="field"></div>
-            
-        <div class="field new-address-block">
-            <div class="control">
-                <button class="button is-light" id="new_address">Add more adresses</button>
+        <h1 class="title">Допомічник кур'єра</h1>
+        <p>
+            Введіть початкову та кінцеву адреси. Також введіть адрси не обов'язкових точки маршруту, їх буде додано до маршруту, ящко вони будуть розташовані на шляху до кінцевої адреси.
+        </p>
+        <div class="inputs-block">
+
+            <h4>Адреси</h4>
+
+            <div id="start" class="field"></div>
+            <div id="inputs" class="field"></div>
+            <div id="finish" class="field"></div>
+
+            <div class="field new-address-block">
+                <div class="control">
+                    <button class="button is-light" id="new_address">Додати необовязкову</button>
+                </div>
+            </div>
+
+            <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-link" id="build">Побудувати найкоротший маршрут</button>
+                </div>
+            </div>
+
+            <div class="map">
+                <div id="googleMap"></div>
             </div>
         </div>
-              
-              
-        <div class="field is-grouped">
-            <div class="control">
-              <button class="button is-link" id="build">Build route</button>
-          </div>
-
-        </div>
-        
-        <div class="map">
-            <div id="googleMap"></div>
-        </div>
     </div>
-
     <script src="js/main.js"></script>
 </body>
 </html>
