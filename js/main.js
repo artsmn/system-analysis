@@ -9,10 +9,7 @@ const finishBlock = $('#finish');
 
 let autocompleteList = [];
 
-
-// console.log(adressesInpt);
-
-let addresses = [];
+let mapMarkers = [];
 
 buildBtn.click(buildRoute);
 newAddressBtn.click(newAddress);
@@ -45,23 +42,24 @@ function newAddress(event, type = 'dynamic', label = 'Опціональна', a
     }
 }
 
-function buildRoute() {
-    addresses = [];
-    console.log([...addressesInpt, ...staticAddressesInpt]);
-    [...addressesInpt, ...staticAddressesInpt].map(async function (el) {
-        console.log(el);
-        if (el.value) {
-            let coordinates = await loadCoordinates(el.value);
-            new google.maps.Marker({
-                position: coordinates,
-                map,
-                title: "Hello World!",
-                });
-            addresses.push(coordinates);
-        }
-    });
+async function buildRoute() {
+    let addresses = [];
+    while(mapMarkers.length) { mapMarkers.pop().setMap(null); } // clears map from markers
 
-    console.log(addresses);
+    addresses.push(...(await Promise.all([...staticAddressesInpt].map(getAddressMap))));
+    addresses.push(...(await Promise.all([...addressesInpt].map(getAddressMap))));
+
+    const graph = new Graph(addresses);
+    graph.breadthFirstSearch();
+    console.log(graph.shortestPath());
+}
+
+async function getAddressMap(el) {
+    if (el.value) {
+        let coordinates = await loadCoordinates(el.value);
+        mapMarkers.push(new google.maps.Marker({ position: coordinates, map }));
+        return new Address({...coordinates, title: el.value});
+    }
 }
 
 function reloadAddresses() {
@@ -79,5 +77,3 @@ async function loadCoordinates(address) {
         });
     return res.results[0].geometry.location;
 }
-
-
