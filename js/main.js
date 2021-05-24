@@ -51,7 +51,15 @@ async function buildRoute() {
 
     const graph = new Graph(addresses);
     graph.breadthFirstSearch();
-    console.log(graph.shortestPath());
+    const shortPath = graph.shortestPath();
+
+    const linePath = new google.maps.Polyline({
+        path: shortPath.map( el => el.address),
+        geodesic: true,
+        strokeColor: '#FF0000'
+    });
+
+    linePath.setMap(map);
 }
 
 async function getAddressMap(el) {
