@@ -10,6 +10,7 @@ const finishBlock = $('#finish');
 let autocompleteList = [];
 
 let mapMarkers = [];
+let lines = [];
 
 buildBtn.click(buildRoute);
 newAddressBtn.click(newAddress);
@@ -45,6 +46,7 @@ function newAddress(event, type = 'dynamic', label = 'Опціональна', a
 async function buildRoute() {
     let addresses = [];
     while(mapMarkers.length) { mapMarkers.pop().setMap(null); } // clears map from markers
+    while(lines.length) { lines.pop().setMap(null); } // clears map from markers
 
     addresses.push(...(await Promise.all([...staticAddressesInpt].map(getAddressMap))));
     addresses.push(...(await Promise.all([...addressesInpt].map(getAddressMap))));
@@ -58,6 +60,7 @@ async function buildRoute() {
         geodesic: true,
         strokeColor: '#FF0000'
     });
+    lines.push(linePath);
 
     linePath.setMap(map);
 }

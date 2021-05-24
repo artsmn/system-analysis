@@ -15,14 +15,25 @@ class Graph {
 
     shortestPath () {
         if(this.path) {
-            const array = this.findParent(this.getNodeById(this.path.pop()), []);
-            return array;
+            return this.findParent(this.getNodeById(this.path.pop()), []);
         }
         throw Error('breadthFirstSearch should be called first');
     }
 
     getNodeById(id) {
         return this.nodes[this.nodes.findIndex(x => x.id === id)];
+    }
+
+    static __getNearest(node, nodes) {
+        let nearest = { distance: null, node: null };
+        nodes.map(mapNode => {
+            const distance = getDistance(node.address, mapNode.address);
+            if ((!nearest.distance || nearest.distance > distance) && node.id !== mapNode.id) {
+                nearest.distance = distance;
+                nearest.node = mapNode;
+            }
+        });
+        return nearest;
     }
 
     __buildGraph (addresses) {
@@ -40,23 +51,27 @@ class Graph {
                     node.children.push(childNode.id);
                     nodes[nodes.findIndex(x => x.id === childNode.id)].parent = node.id;
                 }
-            })
+            });
+
+            let nearest;
+            if(node.id === nodes[0].id && !node.children.length) {
+                nearest = Graph.__getNearest(node, nodes);
+                node.children.push(nearest.node.id);
+                nodes[nodes.findIndex(x => x.id === nearest.node.id)].parent = node.id;
+            }
 
             if(!node.parent && node.id !== nodes[0].id) {
-                let nearest = { distance: null, node: null };
-                nodes.map(mapNode => {
-                    const distance = getDistance(node.address, mapNode.address);
-                    if ((!nearest.distance || nearest.distance > distance) && node.id !== mapNode.id) {
-                        nearest.distance = distance;
-                        nearest.node = mapNode;
-                    }
-                })
+                nearest = Graph.__getNearest(node, nodes);
                 node.parent = nearest.node.id;
                 nodes[nodes.findIndex(x => x.id === nearest.node.id)].children.push(node.id);
             }
 
             tempNodes = tempNodes.filter((el) => !([node.id, ...node.children].includes(el.id)));
-        })
+
+            console.log(node);
+            return node;
+        });
+
         return nodes;
         }
 
